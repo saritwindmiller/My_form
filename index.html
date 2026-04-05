@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+<meta charset="UTF-8">
+<title>טופס פרטים</title>
+
+<style>
+body {
+    font-family: David;
+    direction: rtl;
+    padding: 20px;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+}
+</style>
+
+</head>
+<body>
+
+<h1>טופס פרטים</h1>
+
+<div id="content">
+    <label>שם:</label>
+    <input type="text" id="name">
+
+    <label>מגמה:</label>
+    <select id="major">
+        <option>מדעים</option>
+        <option>אומנויות</option>
+        <option>טכנולוגי</option>
+        <option>שדה</option>
+    </select>
+</div>
+
+<br>
+<button onclick="downloadDoc()">הורד כקובץ Word</button>
+
+<script>
+function downloadDoc() {
+    const name = document.getElementById("name").value;
+    const major = document.getElementById("major").value;
+
+    const content = `
+    <p><b>שם:</b> ${name}</p>
+    <p><b>מגמה:</b> ${major}</p>
+    `;
+
+    const html = `
+    <html xmlns:o='urn:schemas-microsoft-com:office:office'
+          xmlns:w='urn:schemas-microsoft-com:office:word'>
+    <head>
+        <meta charset="utf-8">
+        <style>
+            body {
+                font-family: David;
+                font-size: 12pt;
+                line-height: 1.5;
+                direction: rtl;
+            }
+        </style>
+    </head>
+    <body>
+        ${content}
+    </body>
+    </html>
+    `;
+
+    const blob = new Blob(['\ufeff', html], {
+        type: 'application/msword'
+    });
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'document.doc';
+    a.click();
+}
+</script>
+
+</body>
+</html>
